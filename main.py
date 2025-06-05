@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 import asyncio
-from keep_alive import keep_alive
+import os
+from keep_alive import keep_alive  # فقط إذا كنت تستخدم Replit
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -10,11 +11,15 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-CHANNEL_ID = 1271242142374952970
+CHANNEL_ID = 1271242142374952970  # ID الروم الذي تريده
 
 @bot.event
 async def on_ready():
     print(f"✅ Bot started as {bot.user}")
+    
+    channel = bot.get_channel(CHANNEL_ID)
+    if channel:
+        await channel.send("🚨 **تنبيه تلقائي:** تم تشغيل البوت بأمان. الرجاء عدم نشر التوكن.")
 
 @bot.event
 async def on_message(message):
@@ -34,7 +39,7 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-keep_alive()
+keep_alive()  # إذا لم تستخدم replit احذف هذا السطر
 
-# توكن البوت
-bot.run("MTM2ODY3OTg0NDA5MDc0NDg5Mg.GGwhrd.maFwJdfhR541TDn8OL5E0RSdGYkcSDouY-ORvc")
+# تشغيل البوت من متغير البيئة الآمن
+bot.run(os.getenv("DISCORD_TOKEN"))
